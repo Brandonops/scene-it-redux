@@ -33,7 +33,7 @@ export default function Home() {
             .then((res) => res.json())
             .then((data) => {
                 console.log(data)
-                setMovies(data.Search)
+                setMovies(data.Search || [])
                 // dispatch(data.Search)
             })
     }
@@ -65,7 +65,7 @@ export default function Home() {
             <h1>Movie Results</h1>
 
             <Grid container className={classes.root} spacing={3}>
-                <Grid item xs={10}>
+                <Grid item xs={10} sm={6} lg={3} >
                     <Grid container justify="center" spacing={spacing}>
                         {movies.map((movie, index) => (
                             <Grid item>

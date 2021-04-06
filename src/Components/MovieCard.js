@@ -33,12 +33,20 @@ export default function Movie(props) {
 
     const addMovie = () => {
         console.log(movie)
-        dispatch(createdAddMovie(movie))
+        dispatch(createdAddMovie(props.movie))
     }
 
     const deleteMovie = () => {
         dispatch(createdDeleteMovie(movie))
     }
+
+    const changeTextOnSize = (str) => {
+        if (str.length() > 25) {
+        
+    }
+
+
+
 
     return (
         <div>

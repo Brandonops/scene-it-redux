@@ -1,7 +1,7 @@
 import { ADD_MOVIE, DELETE_MOVIE, GET_MOVIES } from "./actions";
 
 const defaultState = {
-  movie: []
+  movies: []
 };
 
 export function movieReducer(state = defaultState, action) {
@@ -9,7 +9,7 @@ export function movieReducer(state = defaultState, action) {
     case ADD_MOVIE:
       return {
         ...state,
-        movie: [...state.movie, action.movie]
+        movies: [...state.movies, action.movie]
       }
     case DELETE_MOVIE:
       return console.log("deleted movie")
