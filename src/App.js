@@ -1,15 +1,19 @@
+  
 import './App.css';
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom"
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import Home from './Pages/Home';
+import { Container } from 'react-bootstrap';
 import Watchlist from './Pages/Watchlist';
+
 function App() {
   return (
     <Router>
-      <div className="App">
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/watchlist">Watchlist</Link>
-          </nav>
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/watchlist">Watchlist</Link>
+      </nav>
+      <Container>
         <Switch>
           <Route path="/" exact>
             <Home />
@@ -17,9 +21,8 @@ function App() {
           <Route path="/watchlist" exact>
             <Watchlist />
           </Route>
-
         </Switch>
-      </div>
+      </Container>
     </Router>
   );
 }

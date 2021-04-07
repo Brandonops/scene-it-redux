@@ -1,80 +1,89 @@
-import { Grid, makeStyles, Paper, TextField } from '@material-ui/core'
-import React, { useState } from 'react'
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import {
+  Button,
+  Col,
+  Form,
+  FormControl,
+  InputGroup,
+  Row,
+} from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import Movie from '../Components/MovieCard'
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        justifyContent: "center",
-    },
-    paper: {
-        height: 140,
-        width: 100,
-    },
-    control: {
-        padding: theme.spacing(2),
-    },
-
-}));
+import MovieCard from '../Components/MovieCard';
+import { setLoading, setData } from '../redux/actions';
 
 
 export default function Home() {
-    const [movies, setMovies] = useState([]);
-    const [movieSearch, setMovieSearch] = useState("")
-    const [spacing, setSpacing] = React.useState(2);
-    const classes = useStyles();
+  const [search, setSearch] = useState('');
+//   const [movies, setMovies] = useState([]);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.loading)
+  const movies = useSelector((state) => state.data)
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetchMovies();
+  };
 
-    // const dispatch = useDispatch();
-    const fetchMovie = () => {
-        const encodedSearch = encodeURIComponent(movieSearch)
-        fetch(`http://www.omdbapi.com/?apikey=59354c85&s=${encodedSearch}`)
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data)
-                setMovies(data.Search || [])
-                // dispatch(data.Search)
-            })
-    }
+  const handleChange = (event) => {
+    setSearch(event.target.value);
+  };
 
-    // const changeTextOnSize = (str) => {
-    //     if (str.length() > 25) {
+  const fetchMovies = () => {
+    dispatch(setLoading(true));
+    fetch(`http://www.omdbapi.com/?apikey=59354c85&s=${search}`)
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(setLoading(false));
+        // setMovies(data.Search || []);
+        dispatch(setData(data.Search || []))
+        if (data.Error) {
+          alert(data.Error);
+        }
+      });
+  };
 
-    //     }
+  return (
+    <div>
+      <h1>Scene-It</h1>
+      <Form onSubmit={handleSubmit}>
+        <InputGroup className="mb-3">
+          <FormControl
+            placeholder="Search Movies"
+            aria-label="Search Movies"
+            onChange={handleChange}
+            value={search}
+            required
+          />
+          <InputGroup.Append>
+            <Button type="submit" variant="outline-secondary">
+              Search
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+      </Form>
 
-    // }
+    { loading ? (
+        'Loading...'
+    ) : (
+      <Row>
+        {movies.map((movie) => {
+          return (
+            <Col
+              key={movie.imdbID}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              className="mb-4"
+            >
+              <MovieCard movie={movie} />
+            </Col>
+          );
+        })}
+      </Row>
+    )}
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        fetchMovie();
-    }
-
-    const handleChange = (event) => {
-        setMovieSearch(event.target.value)
-        console.log(event.target.value)
-    }
-    return (
-        <div>
-            <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
-                <label htmlfor="userInput">Search for a Movie</label>
-                <br></br>
-                <TextField id="filled-basic" label="Search a Movie" variant="filled" name="userInput" onChange={handleChange} />
-                <button type="submit">Search</button>
-            </form>
-            <h1>Movie Results</h1>
-
-            <Grid container className={classes.root} spacing={3}>
-                <Grid item xs={10} sm={6} lg={3} >
-                    <Grid container justify="center" spacing={spacing}>
-                        {movies.map((movie, index) => (
-                            <Grid item>
-                                <Movie movie={movie} key={index} className={classes.paper} />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Grid>
-            </Grid>
-        </div>
-    )
+    </div>
+  );
 }
