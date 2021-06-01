@@ -34,7 +34,6 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => {
         dispatch(setLoading(false));
-        // setMovies(data.Search || []);
         dispatch(setData(data.Search || []))
         if (data.Error) {
           alert(data.Error);
