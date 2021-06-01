@@ -15,7 +15,6 @@ import { setLoading, setData } from '../redux/actions';
 
 export default function Home() {
   const [search, setSearch] = useState('');
-//   const [movies, setMovies] = useState([]);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loading)
   const movies = useSelector((state) => state.data)
@@ -31,7 +30,7 @@ export default function Home() {
 
   const fetchMovies = () => {
     dispatch(setLoading(true));
-    fetch(`http://www.omdbapi.com/?apikey=59354c85&s=${search}`)
+    fetch(`http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${search}`)
       .then((res) => res.json())
       .then((data) => {
         dispatch(setLoading(false));
