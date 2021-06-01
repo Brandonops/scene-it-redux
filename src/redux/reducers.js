@@ -8,7 +8,6 @@ export function movieReducer(state = [], action) {
       return [...state, action.movie]
     case DELETE_MOVIE:
       return state.filter((movie) => movie.imdbID !== action.imdbID)
-
     default:
       return state;
   }
@@ -19,7 +18,6 @@ export function loadingReducer(state = false, action) {
   switch (action.type) {
     case SET_LOADING:
       return action.value
-
     default:
       return state
   }
