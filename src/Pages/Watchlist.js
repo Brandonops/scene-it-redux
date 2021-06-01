@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import MovieCard from '../Components/MovieCard';
 
 export default function Watchlist() {
-  // const movies = useSelector((state) => { return state.movies })
   const movies = useSelector((state) => state.movies);
 
   return (
